@@ -1,0 +1,23 @@
+# vim:set aw:
+COMPAT
+AUTHORS
+INSTALL
+POSIX
+MANIFEST
+CHANGES
+NEWS
+NOTES
+*.sub
+*.tests
+*.def
+*.po
+*.bash
+*.sh
+*.m4
+*.in
+*.ac
+examples/
+doc/
+CWRU/
+Makefile.in
+configure

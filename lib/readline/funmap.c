@@ -69,6 +69,8 @@ static const FUNMAP default_funmap[] = {
   { "beginning-of-history", rl_beginning_of_history },
   { "beginning-of-line", rl_beg_of_line },
   { "bracketed-paste-begin", rl_bracketed_paste_begin },
+  { "focus-gained", rl_focus_gained },
+  { "focus-lost", rl_focus_lost },
   { "call-last-kbd-macro", rl_call_last_kbd_macro },
   { "capitalize-word", rl_capitalize_word },
   { "character-search", rl_char_search },

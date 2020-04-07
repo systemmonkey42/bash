@@ -1769,6 +1769,7 @@ static const struct {
   { "disable-completion",	&rl_inhibit_completion,		0 },
   { "echo-control-characters",	&_rl_echo_control_chars,	0 },
   { "enable-bracketed-paste",	&_rl_enable_bracketed_paste,	0 },
+  { "enable-focus-reporting",	&_rl_enable_focus_reporting,	0 },
   { "enable-keypad",		&_rl_enable_keypad,		0 },
   { "enable-meta-key",		&_rl_enable_meta,		0 },
   { "expand-tilde",		&rl_complete_with_tilde_expansion, 0 },

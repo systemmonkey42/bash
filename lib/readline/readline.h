@@ -176,6 +176,8 @@ extern int rl_yank_pop PARAMS((int, int));
 extern int rl_yank_nth_arg PARAMS((int, int));
 extern int rl_yank_last_arg PARAMS((int, int));
 extern int rl_bracketed_paste_begin PARAMS((int, int));
+extern int rl_focus_gained PARAMS((int, int));
+extern int rl_focus_lost PARAMS((int, int));
 /* Not available unless _WIN32 is defined. */
 #if defined (_WIN32)
 extern int rl_paste_from_clipboard PARAMS((int, int));

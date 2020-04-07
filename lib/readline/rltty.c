@@ -52,6 +52,8 @@ extern int errno;
 rl_vintfunc_t *rl_prep_term_function = rl_prep_terminal;
 rl_voidfunc_t *rl_deprep_term_function = rl_deprep_terminal;
 
+extern int rl_focus_init(int);
+
 static void set_winsize PARAMS((int));
 
 /* **************************************************************** */
@@ -66,6 +68,7 @@ static void set_winsize PARAMS((int));
 #define TPX_PREPPED	0x01
 #define TPX_BRACKPASTE	0x02
 #define TPX_METAKEY	0x04
+#define TPX_FOCUSREPORT	0x08
 
 static int terminal_prepped;
 
@@ -668,6 +671,13 @@ rl_prep_terminal (int meta_flag)
       nprep |= TPX_BRACKPASTE;
     }
 
+  if (_rl_enable_focus_reporting)
+    {
+      fprintf (rl_outstream, FOCUS_REPORT_INIT);
+      nprep |= TPX_FOCUSREPORT;
+	  rl_focus_init(1);
+    }
+
   fflush (rl_outstream);
   terminal_prepped = nprep;
   RL_SETSTATE(RL_STATE_TERMPREPPED);
@@ -694,6 +704,11 @@ rl_deprep_terminal (void)
       fprintf (rl_outstream, BRACK_PASTE_FINI);
       if (_rl_eof_found)
  	fprintf (rl_outstream, "\n");
+    }
+
+  if (terminal_prepped & TPX_FOCUSREPORT)
+    {
+      fprintf (rl_outstream, FOCUS_REPORT_FINI);
     }
 
   if (_rl_enable_keypad)

@@ -95,6 +95,7 @@ static void bind_arrow_keys_internal PARAMS((Keymap));
 static void bind_arrow_keys PARAMS((void));
 
 static void bind_bracketed_paste_prefix PARAMS((void));
+static void bind_focus_reporting_keys PARAMS((void));
 
 static void readline_default_bindings PARAMS((void));
 static void reset_default_bindings PARAMS((void));
@@ -315,6 +316,10 @@ int _rl_show_mode_in_prompt = 0;
    where it will prefix pasted text with an escape sequence and send
    another to mark the end of the paste. */
 int _rl_enable_bracketed_paste = 0;
+
+/* Non-zero means to attempt to put the terminal in `focus reporting mode'
+   */
+int _rl_enable_focus_reporting = 0;
 
 /* **************************************************************** */
 /*								    */
@@ -1228,6 +1233,7 @@ readline_initialize_everything (void)
   /* Bind the bracketed paste prefix assuming that the user will enable
      it on terminals that support it. */
   bind_bracketed_paste_prefix ();
+  bind_focus_reporting_keys ();
 
   /* If the completion parser's default word break characters haven't
      been set yet, then do so now. */
@@ -1359,6 +1365,25 @@ bind_bracketed_paste_prefix (void)
   
   _rl_keymap = vi_insertion_keymap;
   rl_bind_keyseq_if_unbound (BRACK_PASTE_PREF, rl_bracketed_paste_begin);
+
+  _rl_keymap = xkeymap;
+}
+  
+
+static void
+bind_focus_reporting_keys (void)
+{
+  Keymap xkeymap;
+
+  xkeymap = _rl_keymap;
+
+  _rl_keymap = emacs_standard_keymap;
+  rl_bind_keyseq_if_unbound (FOCUS_REPORT_GAIN, rl_focus_gained);
+  rl_bind_keyseq_if_unbound (FOCUS_REPORT_LOST, rl_focus_lost);
+  
+  _rl_keymap = vi_insertion_keymap;
+  rl_bind_keyseq_if_unbound (FOCUS_REPORT_GAIN, rl_focus_gained);
+  rl_bind_keyseq_if_unbound (FOCUS_REPORT_LOST, rl_focus_lost);
 
   _rl_keymap = xkeymap;
 }

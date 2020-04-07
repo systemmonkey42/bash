@@ -309,6 +309,12 @@ extern int _rl_search_getchar PARAMS((_rl_search_cxt *));
 #define BRACK_PASTE_INIT	"\033[?2004h"
 #define BRACK_PASTE_FINI	"\033[?2004l\r"
 
+#define FOCUS_REPORT_INIT	"\033[?1004h"
+#define FOCUS_REPORT_FINI	"\033[?1004l"
+
+#define FOCUS_REPORT_GAIN   "\033[I"
+#define FOCUS_REPORT_LOST   "\033[O"
+
 extern char *_rl_bracketed_text PARAMS((size_t *));
 
 /* macro.c */
@@ -507,6 +513,7 @@ extern int _rl_revert_all_at_newline;
 extern int _rl_echo_control_chars;
 extern int _rl_show_mode_in_prompt;
 extern int _rl_enable_bracketed_paste;
+extern int _rl_enable_focus_reporting;
 extern char *_rl_comment_begin;
 extern unsigned char _rl_parsing_conditionalized_out;
 extern Keymap _rl_keymap;

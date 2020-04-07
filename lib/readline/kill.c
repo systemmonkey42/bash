@@ -26,6 +26,7 @@
 #endif
 
 #include <sys/types.h>
+#include <sys/time.h>
 
 #if defined (HAVE_UNISTD_H)
 #  include <unistd.h>           /* for _POSIX_VERSION */
@@ -727,6 +728,44 @@ rl_bracketed_paste_begin (int count, int key)
 
   xfree (buf);
   return (retval);
+}
+
+struct timeval focus_report_delay;
+
+int
+rl_focus_init(int i)
+{
+	if(i) {
+		gettimeofday(&focus_report_delay,NULL);
+	} else {
+		struct timeval ct;
+		gettimeofday(&ct,NULL);
+		long delta = ((ct.tv_sec-focus_report_delay.tv_sec)*1000000)+(ct.tv_usec-focus_report_delay.tv_usec);
+		return delta > 2000;
+	}
+	return 0;
+}
+
+extern char*get_string_value(const char  *);
+extern void execute_variable_command (const char *, const char *);
+int
+rl_focus_gained (int count, int key)
+{
+	if( rl_focus_init(0) ) {
+		char *command_to_execute = get_string_value("FOCUS_GAINED_COMMAND");
+		if (command_to_execute)
+			execute_variable_command (command_to_execute, "FOCUS_GAINED_COMMAND");
+	}
+	return 0;
+}
+
+int
+rl_focus_lost (int count, int key)
+{
+	char *command_to_execute = get_string_value("FOCUS_LOST_COMMAND");
+	if (command_to_execute)
+		execute_variable_command (command_to_execute, "FOCUS_LOST_COMMAND");
+	return 0;
 }
 
 /* A special paste command for Windows users. */
